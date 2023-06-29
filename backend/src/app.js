@@ -13,5 +13,6 @@ app.get('/products', productsController.findAll);
 app.get('/products/:id', productsController.findById);
 app.get('/sales', salesController.findAll);
 app.get('/sales/:id', salesController.findById);
+app.post('/products', productsController.createProduct);
 
 module.exports = app;
