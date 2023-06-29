@@ -20,8 +20,6 @@ const insert = async (productData) => {
   const placeholders = getFormattedPlaceholders(productData);
   const query = `INSERT INTO products (${columns}) VALUE (${placeholders});`;
 
-  console.log(query);
-
   const [{ insertId }] = await connection.execute(query, [...Object.values(productData)]);
 
   return insertId;
