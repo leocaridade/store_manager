@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
-const { productsFromDB, productFromDB } = require('../products.mocks');
+const { productsFromDB, productFromDB, productIdFromModel, productCreated } = require('../products.mocks');
 const { productsService } = require('../../../src/services');
 
 describe('Products Service Tests', function () {
@@ -27,6 +27,36 @@ describe('Products Service Tests', function () {
     const response = await productsService.findById(inputData);
     expect(response.status).to.equal('SUCCESSFUL');
     expect(response.data).to.deep.equal(productFromDB);
+  });
+
+  it('Should be able to create a product successfully', async function () {
+    sinon.stub(productsModel, 'insert').resolves(productIdFromModel);
+    sinon.stub(productsModel, 'findById').resolves(productCreated);
+
+    const inputData = { name: 'Teia de Aranha' };
+    const response = await productsService.insert(inputData);
+
+    expect(response).to.be.an('object');
+    expect(response.status).to.equal('CREATED');
+    expect(response.data).to.deep.equal(productCreated);
+  });
+
+  it('Should fail to create a product without column "name"', async function () {
+    const inputData = { login: 'Teia de Aranha' };
+    const response = await productsService.insert(inputData);
+
+    expect(response).to.be.an('object');
+    expect(response.status).to.equal('BAD_REQUEST');
+    expect(response.data).to.deep.equal({ message: '"name" is required' });
+  });
+
+  it('Should fail to create a product with a name less than 6 characters', async function () {
+    const inputData = { name: 'Arroz' };
+    const response = await productsService.insert(inputData);
+
+    expect(response).to.be.an('object');
+    expect(response.status).to.equal('UNPROCESSABLE_ENTITY');
+    expect(response.data).to.deep.equal({ message: '"name" length must be at least 5 characters long' });
   });
 
   afterEach(function () {

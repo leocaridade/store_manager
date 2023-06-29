@@ -18,6 +18,17 @@ const productFromDB = {
   name: 'Martelo de Thor',
 };
 
+const productCreated = {
+  id: 4,
+  name: 'Teia de Aranha',
+};
+
+const productIdFromDB = {
+  insertId: 4,
+};
+
+const productIdFromModel = 4;
+
 const productsFromServiceSuccessful = {
   status: 'SUCCESSFUL',
   data: productsFromDB,
@@ -28,23 +39,36 @@ const productFromServiceSuccessful = {
   data: productFromDB,
 };
 
+const productFromServiceCreated = {
+  status: 'CREATED',
+  data: productCreated,
+};
+
 const productFromServiceNotFound = {
   status: 'NOT_FOUND',
   data: { message: 'Product not found' },
 };
 
-const productIdFromDB = {
-  insertId: 4,
+const productFromServiceBadRequest = {
+  status: 'BAD_REQUEST',
+  data: { message: '"name" is required' },
 };
 
-const productIdFromModel = 4;
+const productFromServiceInvalidValue = {
+  status: 'UNPROCESSABLE_ENTITY',
+  data: { message: '"name" length must be at least 5 characters long' },
+};
 
 module.exports = {
   productsFromDB,
   productFromDB,
   productsFromServiceSuccessful,
   productFromServiceSuccessful,
+  productFromServiceCreated,
   productFromServiceNotFound,
+  productFromServiceBadRequest,
+  productFromServiceInvalidValue,
   productIdFromDB,
   productIdFromModel,
+  productCreated,
 };
