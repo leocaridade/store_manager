@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { productsModel } = require('../../../src/models');
-const { productsFromDB, productFromDB } = require('./products.mock');
+const { productsFromDB, productFromDB } = require('../products.mocks');
 
 describe('Products Model Tests', function () {
   it('Should be able to find all products successfully', async function () {
