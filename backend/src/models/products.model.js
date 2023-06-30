@@ -18,7 +18,7 @@ const findById = async (productId) => {
 const insert = async (productData) => {
   const columns = getFormattedColumnNames(productData);
   const placeholders = getFormattedPlaceholders(productData);
-  const query = `INSERT INTO products (${columns}) VALUE (${placeholders});`;
+  const query = `INSERT INTO products (${columns}) VALUES (${placeholders});`;
 
   const [{ insertId }] = await connection.execute(query, [...Object.values(productData)]);
 
