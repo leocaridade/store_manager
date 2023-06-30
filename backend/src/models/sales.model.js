@@ -31,12 +31,12 @@ const insertSales = async (salesData) => {
   const [{ insertId }] = await connection
   .execute('INSERT INTO sales (date) VALUES (CURRENT_TIMESTAMP());');
 
-  const columns = `sales_id, ${getFormattedColumnNames(salesData[0])}`;
+  const columns = `sale_id, ${getFormattedColumnNames(salesData[0])}`;
   const placeholders = getPlaceholdersForInsertSales(salesData);
   const values = salesData.flatMap(({ productId, quantity }) => [insertId, productId, quantity]);
 
   const query = `INSERT INTO sales_products (${columns}) VALUES ${placeholders};`;
-  await connection.execute(query, [insertId, ...values]);
+  await connection.execute(query, [...values]);
   
   return insertId;
 };
