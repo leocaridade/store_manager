@@ -34,6 +34,12 @@ const allSalesById = [
   },
 ];
 
+const salesIdFromDB = {
+  insertId: 3,
+};
+
+const salesIdFromModel = 3;
+
 const allSalesFromServiceSuccessful = {
   status: 'SUCCESSFUL',
   data: allSales,
@@ -52,6 +58,8 @@ const salesFromServiceNotFound = {
 module.exports = {
   allSales,
   allSalesById,
+  salesIdFromDB,
+  salesIdFromModel,
   allSalesFromServiceSuccessful,
   allSalesByIdFromServiceSuccessful,
   salesFromServiceNotFound,
