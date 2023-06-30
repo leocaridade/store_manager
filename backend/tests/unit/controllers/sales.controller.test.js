@@ -13,6 +13,8 @@ const {
   allSalesFromServiceSuccessful,
   salesFromServiceNotFound,
   allSalesByIdFromServiceSuccessful,
+  saleCreatedSuccessfully,
+  saleCreated,
 } = require('../sales.mocks');
 
 describe('Sales Controller Tests', function () {
@@ -56,6 +58,21 @@ describe('Sales Controller Tests', function () {
     await salesController.findById(req, res);
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(allSalesById);
+  });
+
+  it('Should be able to create a sale successfully - Status 201', async function () {
+    sinon.stub(salesService, 'createSale').resolves(saleCreatedSuccessfully);
+    const bodyData = [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }];
+
+    const req = { params: { }, body: { bodyData } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.createSale(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(saleCreated);
   });
 
   afterEach(function () {

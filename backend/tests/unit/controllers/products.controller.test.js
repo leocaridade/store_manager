@@ -12,11 +12,13 @@ const {
   productsFromServiceSuccessful,
   productFromServiceSuccessful,
   productFromServiceNotFound,
+  productFromServiceCreated,
+  productCreated,
 } = require('../products.mocks');
 const { productsController } = require('../../../src/controllers');
 
 describe('Products Controller Tests', function () {
-  it('Should be able to find all products successfully - Status 200', async function () {
+  it('Should be able to find all products successfully - Status 201', async function () {
     sinon.stub(productsService, 'findAll').resolves(productsFromServiceSuccessful);
 
     const req = { params: { }, body: { } };
@@ -56,6 +58,20 @@ describe('Products Controller Tests', function () {
     await productsController.findById(req, res);
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(productFromDB);
+  });
+
+  it('Should be able to create a product successfully - Status 200', async function () {
+    sinon.stub(productsService, 'insert').resolves(productFromServiceCreated);
+
+    const req = { params: { }, body: { name: 'Teia de Aranha' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.createProduct(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(productCreated);
   });
 
   afterEach(function () {
