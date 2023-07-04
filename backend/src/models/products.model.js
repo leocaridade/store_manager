@@ -1,4 +1,5 @@
 const camelize = require('camelize');
+const snakeize = require('snakeize');
 const connection = require('./connection');
 const {
   getFormattedColumnNames,
@@ -26,9 +27,8 @@ const insert = async (productData) => {
 };
 
 const update = async (productId, productData) => {
-  const columns = getFormattedColumnNames(productData);
-  const placeholders = getFormattedPlaceholders(productData);
-  const query = `UPDATE products SET ${columns} = ${placeholders} WHERE id = ?;`;
+  const formattedColumns = Object.keys(snakeize(productData)).map((key) => `${key} = ?`).join(', ');
+  const query = `UPDATE products SET ${formattedColumns} WHERE id = ?;`;
   
   await connection.execute(query, [...Object.values(productData), productId]);
 };
