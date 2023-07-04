@@ -18,5 +18,6 @@ app.post('/sales', salesController.createSale);
 app.put('/products/:id', productsController.update);
 app.delete('/products/:id', productsController.deleteProduct);
 app.delete('/sales/:id', salesController.deleteSale);
+app.put('/sales/:saleId/products/:productId/quantity', salesController.updateSalesProduct);
 
 module.exports = app;

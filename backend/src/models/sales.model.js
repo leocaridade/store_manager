@@ -46,9 +46,32 @@ const deleteSale = async (saleId) => {
   return result;
 };
 
+const findByProductId = async (productId) => {
+  const [[sale]] = await connection.execute(
+    `SELECT sp.sale_id, sp.product_id, sp.quantity, s.date
+      FROM sales_products AS sp 
+      LEFT JOIN sales AS s ON sp.sale_id = s.id
+      WHERE sp.product_id = ?
+      ORDER BY sp.sale_id, sp.product_id;`,
+      [productId],
+  );
+  return camelize(sale);
+};
+
+const updateSalesProduct = async (quantity, saleId, productId) => {
+  const query = 'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?;';
+
+  await connection.execute(query, [quantity, saleId, productId]);
+  
+  const sale = await findByProductId(productId);
+  return sale;
+};
+
 module.exports = {
   findAll,
   findById,
   insertSales,
   deleteSale,
+  findByProductId,
+  updateSalesProduct,
 };
