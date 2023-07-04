@@ -64,6 +64,11 @@ const productFromServiceInvalidValue = {
   data: { message: '"name" length must be at least 5 characters long' },
 };
 
+const productFromServiceUpdated = {
+  status: 'SUCCESSFUL',
+  data: updatedProductFromDB,
+};
+
 const returnFromUpdate = [{
   fieldCount: 0,
   affectedRows: 1,
@@ -89,4 +94,5 @@ module.exports = {
   productIdFromModel,
   productCreated,
   returnFromUpdate,
+  productFromServiceUpdated,
 };
