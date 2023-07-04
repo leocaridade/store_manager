@@ -7,6 +7,7 @@ const {
   productFromDB,
   productIdFromDB,
   productIdFromModel,
+  returnFromUpdate,
 } = require('../products.mocks');
 
 describe('Products Model Tests', function () {
@@ -44,6 +45,20 @@ describe('Products Model Tests', function () {
 
     expect(insertId).to.be.a('number');
     expect(insertId).to.equal(productIdFromModel);
+  });
+
+  it('Should be able to update a product successfully', async function () {
+    sinon.stub(connection, 'execute').resolves(returnFromUpdate);
+
+    const productId = 1;
+    const inputData = { name: 'Teia de Aranha' };
+    
+    const result = await productsModel.update(productId, inputData);
+
+    expect(result).to.be.an('array');
+    expect(result[0]).to.be.an('object');
+    expect(result[0].affectedRows).to.be.equal(1);
+    expect(result[0].changedRows).to.be.equal(1);
   });
 
   afterEach(function () {

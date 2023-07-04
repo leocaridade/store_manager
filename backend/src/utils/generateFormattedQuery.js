@@ -11,8 +11,13 @@ const getPlaceholdersForInsertSales = (objectArray) => {
   return placeholderString;
 };
 
+const getFormattedUpdateColumns = (object) => Object.keys(snakeize(object))
+  .map((key) => `${key} = ?`)
+  .join(', ');
+
 module.exports = {
   getFormattedColumnNames,
   getFormattedPlaceholders,
   getPlaceholdersForInsertSales,
+  getFormattedUpdateColumns,
 };

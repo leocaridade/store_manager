@@ -18,6 +18,11 @@ const productFromDB = {
   name: 'Martelo de Thor',
 };
 
+const updatedProductFromDB = {
+  id: 1,
+  name: 'Martelo do Batman',
+};
+
 const productCreated = {
   id: 4,
   name: 'Teia de Aranha',
@@ -59,9 +64,21 @@ const productFromServiceInvalidValue = {
   data: { message: '"name" length must be at least 5 characters long' },
 };
 
+const returnFromUpdate = [{
+  fieldCount: 0,
+  affectedRows: 1,
+  insertId: 0,
+  info: 'Rows matched: 1  Changed: 1  Warnings: 0',
+  serverStatus: 2,
+  warningStatus: 0,
+  changedRows: 1,
+},
+undefined];
+
 module.exports = {
   productsFromDB,
   productFromDB,
+  updatedProductFromDB,
   productsFromServiceSuccessful,
   productFromServiceSuccessful,
   productFromServiceCreated,
@@ -71,4 +88,5 @@ module.exports = {
   productIdFromDB,
   productIdFromModel,
   productCreated,
+  returnFromUpdate,
 };
