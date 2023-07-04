@@ -8,6 +8,7 @@ const {
   productIdFromDB,
   productIdFromModel,
   returnFromUpdate,
+  returnFromDelete,
 } = require('../products.mocks');
 
 describe('Products Model Tests', function () {
@@ -59,6 +60,16 @@ describe('Products Model Tests', function () {
     expect(result[0]).to.be.an('object');
     expect(result[0].affectedRows).to.be.equal(1);
     expect(result[0].changedRows).to.be.equal(1);
+  });
+
+  it('Should be able to delete a product successfully', async function () {
+    sinon.stub(connection, 'execute').resolves(returnFromDelete);
+
+    const result = await productsModel.deleteProduct();
+
+    expect(result).to.be.an('array');
+    expect(result[0]).to.be.an('object');
+    expect(result[0].affectedRows).to.be.equal(1);
   });
 
   afterEach(function () {

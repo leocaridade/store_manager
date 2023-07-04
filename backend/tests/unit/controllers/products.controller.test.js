@@ -16,6 +16,7 @@ const {
   productCreated,
   productFromServiceUpdated,
   updatedProductFromDB,
+  productFromServiceDeleted,
 } = require('../products.mocks');
 const { productsController } = require('../../../src/controllers');
 
@@ -88,6 +89,33 @@ describe('Products Controller Tests', function () {
     await productsController.update(req, res);
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(updatedProductFromDB);
+  });
+
+  it('Should be able to delete a product successfully - Status 204', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves(productFromServiceDeleted);
+
+    const req = { params: { id: '1' }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProduct(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
+
+  it('Should fail to delete a product with a non-existent id - Status 404', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves(productFromServiceNotFound);
+
+    const req = { params: { id: '5' }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProduct(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(productFromServiceNotFound.data);
   });
 
   afterEach(function () {
