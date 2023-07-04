@@ -30,8 +30,32 @@ const insert = async (productDataObject) => {
   return { status: 'CREATED', data: newProduct };
 };
 
+const update = async (productId, productDataObject) => {
+  const { name } = productDataObject;
+  if (!name) {
+    return { status: 'BAD_REQUEST', data: { message: '"name" is required' } };
+  } 
+
+  if (name && name.length < 6) {
+    return { status: 'UNPROCESSABLE_ENTITY',
+    data: { message: '"name" length must be at least 5 characters long' } };
+  }
+
+  const isProductIdValid = await productsModel.findById(productId);
+  if (!isProductIdValid) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+  }
+
+  await productsModel.update(productId, productDataObject);
+
+  const updatedProduct = await productsModel.findById(productId);
+
+  return { status: 'SUCCESSFUL', data: updatedProduct };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
+  update,
 };

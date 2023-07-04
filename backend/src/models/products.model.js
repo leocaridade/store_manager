@@ -25,8 +25,17 @@ const insert = async (productData) => {
   return insertId;
 };
 
+const update = async (productId, productData) => {
+  const columns = getFormattedColumnNames(productData);
+  const placeholders = getFormattedPlaceholders(productData);
+  const query = `UPDATE products SET ${columns} = ${placeholders} WHERE id = ?;`;
+  
+  await connection.execute(query, [...Object.values(productData), productId]);
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
+  update,
 };
