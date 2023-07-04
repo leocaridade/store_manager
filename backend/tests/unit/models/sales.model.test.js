@@ -8,6 +8,7 @@ const {
   salesIdFromDB,
   salesIdFromModel,
 } = require('../sales.mocks');
+const { returnFromDelete } = require('../products.mocks');
 
 describe('Sales Model Tests', function () {
   it('Should be able to find all sales successfully', async function () {
@@ -59,6 +60,16 @@ describe('Sales Model Tests', function () {
 
     expect(insertId).to.be.a('number');
     expect(insertId).to.equal(salesIdFromModel);
+  });
+
+  it('Should be able to delete a sale successfully', async function () {
+    sinon.stub(connection, 'execute').resolves(returnFromDelete);
+
+    const result = await salesModel.deleteSale();
+
+    expect(result).to.be.an('array');
+    expect(result[0]).to.be.an('object');
+    expect(result[0].affectedRows).to.be.equal(1);
   });
 
   afterEach(function () {

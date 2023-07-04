@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const { salesModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
 const { allSales, allSalesById, salesIdFromModel } = require('../sales.mocks');
+const { returnFromDelete } = require('../products.mocks');
 
 describe('Sales Service Tests', function () {
   it('Should be able to find all sales successfully', async function () {
@@ -117,6 +118,29 @@ describe('Sales Service Tests', function () {
     expect(response).to.be.an('object');
     expect(response.status).to.equal('NOT_FOUND');
     expect(response.data).to.deep.equal({ message: 'Product not found' });
+  });
+
+  it('Should be able to delete a sale successfully', async function () {
+    sinon.stub(salesModel, 'findById').resolves(allSalesById);
+    sinon.stub(salesModel, 'deleteSale').resolves(returnFromDelete);
+
+    const saleId = 1;
+
+    const response = await salesService.deleteSale(saleId);
+
+    expect(response).to.be.an('object');
+    expect(response.status).to.be.equal('DELETED');
+  });
+
+  it('Should fail to delete a sale with a non-existent id', async function () {
+    sinon.stub(salesModel, 'findById').resolves([]);
+
+    const saleId = 999;
+    const response = await salesService.deleteSale(saleId);
+
+    expect(response).to.be.an('object');
+    expect(response.status).to.equal('NOT_FOUND');
+    expect(response.data).to.deep.equal({ message: 'Sale not found' });
   });
 
   afterEach(function () {

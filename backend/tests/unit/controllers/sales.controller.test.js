@@ -15,6 +15,7 @@ const {
   allSalesByIdFromServiceSuccessful,
   saleCreatedSuccessfully,
   saleCreated,
+  salesFromServiceDeleted,
 } = require('../sales.mocks');
 
 describe('Sales Controller Tests', function () {
@@ -73,6 +74,33 @@ describe('Sales Controller Tests', function () {
     await salesController.createSale(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(saleCreated);
+  });
+
+  it('Should be able to delete a sale successfully - Status 204', async function () {
+    sinon.stub(salesService, 'deleteSale').resolves(salesFromServiceDeleted);
+
+    const req = { params: { id: '1' }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.deleteSale(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
+
+  it('Should fail to delete a sale with a non-existent id - Status 404', async function () {
+    sinon.stub(salesService, 'deleteSale').resolves(salesFromServiceNotFound);
+
+    const req = { params: { id: '999' }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.deleteSale(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(salesFromServiceNotFound.data);
   });
 
   afterEach(function () {

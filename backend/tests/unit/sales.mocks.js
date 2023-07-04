@@ -55,6 +55,10 @@ const salesFromServiceNotFound = {
   data: { message: 'Sale not found' },
 };
 
+const salesFromServiceDeleted = {
+  status: 'DELETED',
+};
+
 const saleCreated = {
   id: 3,
   itemsSold: [
@@ -82,6 +86,7 @@ module.exports = {
   allSalesFromServiceSuccessful,
   allSalesByIdFromServiceSuccessful,
   salesFromServiceNotFound,
+  salesFromServiceDeleted,
   saleCreatedSuccessfully,
   saleCreated,
 };
