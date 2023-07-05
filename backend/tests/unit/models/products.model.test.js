@@ -72,6 +72,15 @@ describe('Products Model Tests', function () {
     expect(result[0].affectedRows).to.be.equal(1);
   });
 
+  it('Should be able to find a list of products that its name matches query', async function () {
+    sinon.stub(connection, 'execute').resolves([[productFromDB]]);
+
+    const query = 'Martelo';
+    const products = await productsModel.findByQuery(query);
+    expect(products).to.be.an('array');
+    expect(products[0]).to.deep.equal(productFromDB);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

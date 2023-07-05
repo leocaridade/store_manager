@@ -118,6 +118,20 @@ describe('Products Controller Tests', function () {
     expect(res.json).to.have.been.calledWith(productFromServiceNotFound.data);
   });
 
+  it('Should be able to find a list of products by query parameter - Status 200', async function () {
+    sinon.stub(productsService, 'findByQuery').resolves(productFromServiceSuccessful);
+
+    const req = { params: { }, body: { }, query: { q: 'Martelo' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.findByQuery(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(productFromDB);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

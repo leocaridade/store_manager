@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
 const { productsFromDB, productFromDB, productIdFromModel, productCreated, updatedProductFromDB, returnFromUpdate, returnFromDelete } = require('../products.mocks');
 const { productsService } = require('../../../src/services');
+const mapStatusHTTP = require('../../../src/utils/mapStatusHTTP');
 
 describe('Products Service Tests', function () {
   it('Should be able to find all products successfully', async function () {
@@ -130,6 +131,20 @@ describe('Products Service Tests', function () {
     expect(response).to.be.an('object');
     expect(response.status).to.equal('NOT_FOUND');
     expect(response.data).to.deep.equal({ message: 'Product not found' });
+  });
+
+  it('Should be able to find a list of products by query parameter', async function () {
+    sinon.stub(productsModel, 'findByQuery').resolves([productFromDB]);
+
+    const query = 'Martelo';
+    const response = await productsService.findByQuery(query);
+    expect(response.status).to.equal('SUCCESSFUL');
+    expect(response.data).to.deep.equal([productFromDB]);
+  });
+
+  it('should return 500 for an unknown status', function () {
+    const result = mapStatusHTTP('UNKNOWN');
+    expect(result).to.equal(500);
   });
 
   afterEach(function () {
