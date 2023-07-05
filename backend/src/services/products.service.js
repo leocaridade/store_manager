@@ -64,10 +64,16 @@ const deleteProduct = async (productId) => {
   return { status: 'DELETED' };
 };
 
+const findByQuery = async (query) => {
+  const products = await productsModel.findByQuery(query);
+  return { status: 'SUCCESSFUL', data: products };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   deleteProduct,
+  findByQuery,
 };

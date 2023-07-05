@@ -39,10 +39,18 @@ const deleteProduct = async (productId) => {
   return result;
 };
 
+const findByQuery = async (query) => {
+  const [products] = await connection
+    .execute('SELECT * FROM products WHERE name LIKE ?', [`%${query}%`]);
+
+  return camelize(products);
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   deleteProduct,
+  findByQuery,
 };
