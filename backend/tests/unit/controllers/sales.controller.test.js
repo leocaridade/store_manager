@@ -16,6 +16,8 @@ const {
   saleCreatedSuccessfully,
   saleCreated,
   salesFromServiceDeleted,
+  salesFromServiceUpdated,
+  saleByProductId,
 } = require('../sales.mocks');
 
 describe('Sales Controller Tests', function () {
@@ -101,6 +103,20 @@ describe('Sales Controller Tests', function () {
     await salesController.deleteSale(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(salesFromServiceNotFound.data);
+  });
+
+  it('Should be able to update a sale by its product_id successfully - Status 200', async function () {
+    sinon.stub(salesService, 'updateSalesProduct').resolves(salesFromServiceUpdated);
+
+    const req = { params: { saleId: '1', productId: '2' }, body: { quantity: '35' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateSalesProduct(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(saleByProductId);
   });
 
   afterEach(function () {

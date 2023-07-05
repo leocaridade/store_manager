@@ -34,6 +34,13 @@ const allSalesById = [
   },
 ];
 
+const saleByProductId = {
+  saleId: 1,
+  productId: 2,
+  quantity: 35,
+  date,
+};
+
 const salesIdFromDB = {
   insertId: 3,
 };
@@ -53,6 +60,11 @@ const allSalesByIdFromServiceSuccessful = {
 const salesFromServiceNotFound = {
   status: 'NOT_FOUND',
   data: { message: 'Sale not found' },
+};
+
+const salesFromServiceUpdated = {
+  status: 'SUCCESSFUL',
+  data: saleByProductId,
 };
 
 const salesFromServiceDeleted = {
@@ -81,11 +93,13 @@ const saleCreatedSuccessfully = {
 module.exports = {
   allSales,
   allSalesById,
+  saleByProductId,
   salesIdFromDB,
   salesIdFromModel,
   allSalesFromServiceSuccessful,
   allSalesByIdFromServiceSuccessful,
   salesFromServiceNotFound,
+  salesFromServiceUpdated,
   salesFromServiceDeleted,
   saleCreatedSuccessfully,
   saleCreated,

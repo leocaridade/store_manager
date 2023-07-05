@@ -55,17 +55,18 @@ const findByProductId = async (productId) => {
       ORDER BY sp.sale_id, sp.product_id;`,
       [productId],
   );
+  
   return camelize(sale);
 };
 
 const updateSalesProduct = async (quantity, saleId, productId) => {
   const query = 'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?;';
 
-  await connection.execute(query, [quantity, saleId, productId]);
-  
-  const sale = await findByProductId(productId);
-  return sale;
+  const result = await connection.execute(query, [quantity, saleId, productId]);
+  return result;
 };
+
+findByProductId(2);
 
 module.exports = {
   findAll,

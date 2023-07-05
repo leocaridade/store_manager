@@ -32,9 +32,6 @@ const deleteSale = async (req, res) => {
 };
 
 const updateSalesProduct = async (req, res) => {
-  // const { saleId, productId } = req.params;
-  // const { quantity } = req.body;
-
   const { status, data } = await salesService.updateSalesProduct({ ...req.body, ...req.params });
 
   return res.status(mapStatusHTTP(status)).json(data);
